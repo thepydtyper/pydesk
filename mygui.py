@@ -3,7 +3,7 @@ from tkinter import *
 
 def get_weather():
     zip = input_window.get()
-    output_window['text'] = f"Gathering weather report for {zip}"
+    output_window['text'] = f"Gathering weather report for\n{zip}"
 
 
 def get_news():
@@ -22,7 +22,7 @@ root.title("Deskpy")
 input_label = Label(root, text="Input: ")
 input_label.grid(row=0, column=0)
 
-input_window = Entry(root, width=50, bg="black", fg="green", borderwidth=5)
+input_window = Entry(root, width=50, bg="black", fg="green", bd=5)
 input_window.grid(row=0, column=1, columnspan=3)
 
 button_weather = Button(root, text="Weather",
@@ -39,7 +39,7 @@ button_stocks.grid(row=1, column=3)
 output_label = Label(root, text="Output: ")
 output_label.grid(row=2, column=0)
 
-output_window = Label(root, width=44, bg="black", fg="green")
+output_window = Label(root, bg="black", fg="green", relief=SUNKEN, width=44)
 output_window.grid(row=2, column=1, columnspan=3)
 
 
