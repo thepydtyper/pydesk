@@ -17,8 +17,7 @@ def get_weather():
     weather_desc = js['weather'][0]['description']
     temp_kel = js['main']['temp']
     weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
-    output_window['text'] = f"Gathering weather report for {zip}:\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
-    #print(weather_url)
+    output_window['text'] = f"Gathering weather report for {zip}..\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
 
 
 def get_news():
