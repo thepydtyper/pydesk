@@ -1,9 +1,24 @@
 from tkinter import *
+import json
+from urllib.request import urlopen
+import ssl
+
+#ignore SSL cert errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
 
 def get_weather():
     zip = input_window.get()
-    output_window['text'] = f"Gathering weather report for\n{zip}"
+    weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip}&APPID=19b28d8185e272acbb4751d900d9db03"
+    data = urlopen(weather_url, context=ctx).read()
+    js = json.loads(data)
+    weather_desc = js['weather'][0]['description']
+    temp_kel = js['main']['temp']
+    weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
+    output_window['text'] = f"Gathering weather report for {zip}:\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
+    #print(weather_url)
 
 
 def get_news():
@@ -18,6 +33,7 @@ def get_stocks():
 
 root = Tk()
 root.title("Deskpy")
+root.iconbitmap("P:/Programming/Apps/_Mine/Desktop-Scraper/pycon.ico")
 
 input_label = Label(root, text="Input: ")
 input_label.grid(row=0, column=0)
