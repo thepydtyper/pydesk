@@ -22,7 +22,15 @@ def get_weather():
 
 def get_news():
     search = input_window.get()
-    output_window['text'] = f"Fetching {search} headlines"
+    news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=b24fda3c46cb4fc69599efdb5aadcbc1"
+    data = urlopen(news_url, context=ctx).read()
+    js = json.loads(data)
+    headline_dict = {}
+    for _ in range(5):
+        title = js['articles'][_]['title']
+        url = js['articles'][_]['url']
+        headline_dict.update({title: url})
+    output_window['text'] = f"Fetching {search} headlines..\n\tArticle: {article}"
 
 
 def get_stocks():
