@@ -44,7 +44,7 @@ def get_stocks():
 
 root = Tk()
 root.title("Deskpy")
-icon = PhotoImage(file = "pycon.png")
+icon = PhotoImage(file="pycon.png")
 root.iconphoto(False, icon)
 
 input_label = Label(root, text="Input: ")
