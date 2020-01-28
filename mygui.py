@@ -3,6 +3,7 @@ from tkinter import font
 import json
 from urllib.request import urlopen
 import ssl
+import yfinance as yf
 
 #ignore SSL cert errors
 ctx = ssl.create_default_context()
@@ -38,8 +39,11 @@ def get_news():
 
 
 def get_stocks():
-    company = input_window.get()
-    output_window['text'] = f"Getting stock quote for {company}"
+    company = input_window.get().upper()
+    ticker = yf.Ticker(company)
+    print(ticker.dividends)
+    output_window['text'] = f"Getting stock quote for {company}:\n"
+    # output_window['text'] += ticker.dividends
 
 
 root = Tk()
