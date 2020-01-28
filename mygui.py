@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import font
 import json
 from urllib.request import urlopen
 import ssl
@@ -17,7 +18,8 @@ def get_weather():
     weather_desc = js['weather'][0]['description']
     temp_kel = js['main']['temp']
     weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
-    output_window['text'] = f"Gathering weather report for {zip}..\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
+    output_window['text'] = f"Gathering weather report for {zip}.."
+    output_window['text'] += f"\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
 
 
 def get_news():
@@ -26,11 +28,13 @@ def get_news():
     data = urlopen(news_url, context=ctx).read()
     js = json.loads(data)
     headline_dict = {}
-    for _ in range(5):
+    for _ in range(3):
         title = js['articles'][_]['title']
         url = js['articles'][_]['url']
         headline_dict.update({title: url})
-    output_window['text'] = f"Fetching {search} headlines..\n\tArticle: {article}"
+    output_window['text'] = f"Fetching '{search}' headlines.."
+    for title, url in headline_dict.items():
+        output_window['text'] += f"\n\t{title}: {url}"
 
 
 def get_stocks():
@@ -40,7 +44,8 @@ def get_stocks():
 
 root = Tk()
 root.title("Deskpy")
-root.iconbitmap("P:/Programming/Apps/_Mine/Desktop-Scraper/pycon.ico")
+icon = PhotoImage(file = "pycon.png")
+root.iconphoto(False, icon)
 
 input_label = Label(root, text="Input: ")
 input_label.grid(row=0, column=0)
