@@ -12,19 +12,21 @@ ctx.verify_mode = ssl.CERT_NONE
 
 def get_weather():
     zip = input_window.get()
-    weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip}&APPID=19b28d8185e272acbb4751d900d9db03"
+    api = "19b28d8185e272acbb4751d900d9db03"
+    weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip}&APPID=" + api
     data = urlopen(weather_url, context=ctx).read()
     js = json.loads(data)
     weather_desc = js['weather'][0]['description']
     temp_kel = js['main']['temp']
     weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
     output_window['text'] = f"Gathering weather report for {zip}.."
-    output_window['text'] += f"\n\tCurrent Temp: {weather_temp}°F\n\tConditions: {weather_desc}"
+    output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
 
 
 def get_news():
     search = input_window.get()
-    news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=b24fda3c46cb4fc69599efdb5aadcbc1"
+    api = "b24fda3c46cb4fc69599efdb5aadcbc1"
+    news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
     data = urlopen(news_url, context=ctx).read()
     js = json.loads(data)
     headline_dict = {}
@@ -47,7 +49,7 @@ def get_stocks():
     high = js["Global Quote"]["03. high"]
     low = js["Global Quote"]["04. low"]
     price = js["Global Quote"]["05. price"]
-    output_window['text'] = f"Getting stock quote for {company}:\n"
+    output_window['text'] = f"Getting stock quote for {company}:..\n"
     output_window['text'] += f"Open: {opening}\n"
     output_window['text'] += f"Low: {low}\n"
     output_window['text'] += f"High: {high}\n"
