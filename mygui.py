@@ -23,40 +23,49 @@ def get_weather():
         output_window['text'] = f"Gathering weather report for {zipc}.."
         output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
     except:
-        output_window["text"] = f"Sorry, but '{zipc}' is not recognized by the system.\nTry another ZIP."
+        output_window["text"] = f"Sorry, but '{zipc}' is not recognized by the system.\n"
+        output_window["text"] += "Try a different ZIP."
 
 
 def get_news():
     search = input_window.get()
     api = "b24fda3c46cb4fc69599efdb5aadcbc1"
     news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
-    data = urlopen(news_url, context=ctx).read()
-    js = json.loads(data)
-    headline_dict = {}
-    for _ in range(3):
-        title = js['articles'][_]['title']
-        url = js['articles'][_]['url']
-        headline_dict.update({title: url})
-    output_window['text'] = f"Fetching '{search}' headlines.."
-    for title, url in headline_dict.items():
-        output_window['text'] += f"\n\t{title}: {url}"
+    try:
+        data = urlopen(news_url, context=ctx).read()
+        js = json.loads(data)
+        headline_dict = {}
+        for _ in range(3):
+            title = js['articles'][_]['title']
+            url = js['articles'][_]['url']
+            headline_dict.update({title: url})
+        output_window['text'] = f"Fetching '{search}' headlines.."
+        for title, url in headline_dict.items():
+            output_window['text'] += f"\n\t{title}: {url}"
+    except:
+        output_window["text"] = f"Sorry, but '{search}' is not recognized by the system.\n"
+        output_window["text"] += "Try a different topic."
 
 
 def get_stocks():
     company = input_window.get().upper()
     api = "KXWH1RPNH5432DUJ"
     stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
-    data = urlopen(stock_url, context=ctx).read()
-    js = json.loads(data)
-    opening = js['Global Quote']['02. open']
-    high = js["Global Quote"]["03. high"]
-    low = js["Global Quote"]["04. low"]
-    price = js["Global Quote"]["05. price"]
-    output_window['text'] = f"Getting stock quote for {company}:..\n"
-    output_window['text'] += f"Open: {opening}\n"
-    output_window['text'] += f"Low: {low}\n"
-    output_window['text'] += f"High: {high}\n"
-    output_window['text'] += f"Price: {price}\n"
+    try:
+        data = urlopen(stock_url, context=ctx).read()
+        js = json.loads(data)
+        opening = js['Global Quote']['02. open']
+        high = js["Global Quote"]["03. high"]
+        low = js["Global Quote"]["04. low"]
+        price = js["Global Quote"]["05. price"]
+        output_window['text'] = f"Getting stock quote for {company}:..\n"
+        output_window['text'] += f"Open: {opening}\n"
+        output_window['text'] += f"Low: {low}\n"
+        output_window['text'] += f"High: {high}\n"
+        output_window['text'] += f"Price: {price}\n"
+    except:
+        output_window["text"] = f"Sorry, but '{company}' is not recognized by the system.\n"
+        output_window["text"] += "Try a different company/symbol."
 
 
 root = Tk()
