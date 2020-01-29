@@ -3,7 +3,6 @@ from tkinter import font
 import json
 from urllib.request import urlopen
 import ssl
-import yfinance as yf
 
 #ignore SSL cert errors
 ctx = ssl.create_default_context()
@@ -40,10 +39,20 @@ def get_news():
 
 def get_stocks():
     company = input_window.get().upper()
-    ticker = yf.Ticker(company)
-    print(ticker.dividends)
+    api = "KXWH1RPNH5432DUJ"
+    stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
+    data = urlopen(stock_url, context=ctx).read()
+    js = json.loads(data)
+    opening = js['Global Quote']['02. open']
+    high = js["Global Quote"]["03. high"]
+    low = js["Global Quote"]["04. low"]
+    price = js["Global Quote"]["05. price"]
     output_window['text'] = f"Getting stock quote for {company}:\n"
-    # output_window['text'] += ticker.dividends
+    output_window['text'] += f"Open: {opening}\n"
+    output_window['text'] += f"Low: {low}\n"
+    output_window['text'] += f"High: {high}\n"
+    output_window['text'] += f"Price: {price}\n"
+
 
 
 root = Tk()
