@@ -4,7 +4,7 @@ import json
 from urllib.request import urlopen
 import ssl
 
-#ignore SSL cert errors
+# ignore SSL cert errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
@@ -56,7 +56,6 @@ def get_stocks():
     output_window['text'] += f"Price: {price}\n"
 
 
-
 root = Tk()
 root.title("Deskpy")
 icon = PhotoImage(file="pycon.png")
@@ -85,5 +84,8 @@ output_label.grid(row=3, column=0)
 
 output_window = Label(root, bg="black", fg="green", relief=SUNKEN, width=44)
 output_window.grid(row=3, column=1, columnspan=3)
+
+pyd_label = Label(root, text="Crafted by the Py'd Typer", bd=1, relief=SUNKEN, font="bold", anchor=E)
+pyd_label.grid(row=4, column=0, columnspan=4, sticky=W+E)
 
 root.mainloop()
