@@ -14,13 +14,16 @@ def get_weather():
     zip = input_window.get()
     api = "19b28d8185e272acbb4751d900d9db03"
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip}&APPID=" + api
-    data = urlopen(weather_url, context=ctx).read()
-    js = json.loads(data)
-    weather_desc = js['weather'][0]['description']
-    temp_kel = js['main']['temp']
-    weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
-    output_window['text'] = f"Gathering weather report for {zip}.."
-    output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
+    try:
+        data = urlopen(weather_url, context=ctx).read()
+        js = json.loads(data)
+        weather_desc = js['weather'][0]['description']
+        temp_kel = js['main']['temp']
+        weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
+        output_window['text'] = f"Gathering weather report for {zip}.."
+        output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
+    except:
+        output_window["text"] = f"Sorry, but '{zip}' is not recognized by the system.\nTry another ZIP."
 
 
 def get_news():
