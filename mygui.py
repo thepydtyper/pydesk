@@ -68,22 +68,22 @@ input_label.grid(row=0, column=0)
 input_window = Entry(root, width=50, bg="black", fg="green", bd=5)
 input_window.grid(row=0, column=1, columnspan=3)
 
-button_weather = Button(root, text="Weather",
-                        command=get_weather, padx=30, pady=20)
+button_weather = Button(root, text="Weather", command=get_weather, padx=30, pady=20)
 button_weather.grid(row=1, column=1)
 
 button_news = Button(root, text="News", command=get_news, padx=30, pady=20)
 button_news.grid(row=1, column=2)
 
-button_stocks = Button(root, text="Stocks",
-                       command=get_stocks, padx=30, pady=20)
+button_stocks = Button(root, text="Stocks", command=get_stocks, padx=30, pady=20)
 button_stocks.grid(row=1, column=3)
 
+button_quit = Button(root, text="Exit", command=root.quit, padx=30, pady=20)
+button_quit.grid(row=2, column=3)
+
 output_label = Label(root, text="Output: ")
-output_label.grid(row=2, column=0)
+output_label.grid(row=3, column=0)
 
 output_window = Label(root, bg="black", fg="green", relief=SUNKEN, width=44)
-output_window.grid(row=2, column=1, columnspan=3)
-
+output_window.grid(row=3, column=1, columnspan=3)
 
 root.mainloop()
