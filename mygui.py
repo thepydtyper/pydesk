@@ -11,6 +11,11 @@ ctx.verify_mode = ssl.CERT_NONE
 
 
 def get_weather():
+    """
+    Called upon user-click of the 'Weather' button.
+    Gets user-inputed zip code as text from the Input field to generate an API call to openweathermap.org
+    :return: prints weather stats for the provided zip code to the output window
+    """
     zipc = input_window.get()
     api = "19b28d8185e272acbb4751d900d9db03"
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zipc}&APPID=" + api
@@ -28,6 +33,11 @@ def get_weather():
 
 
 def get_news():
+    """
+    Called upon user-click of the 'News' button.
+    Gets user-inputed subject as text from the Input field to generate an API call to newsapi.org
+    :return: prints headlines for the provided topic to the output window
+    """
     search = input_window.get()
     api = "b24fda3c46cb4fc69599efdb5aadcbc1"
     news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
@@ -48,6 +58,11 @@ def get_news():
 
 
 def get_stocks():
+    """
+    Called upon user-click of the 'Stocks' button.
+    Gets user-inputed company ticker symbol as text from the Input field to generate an API call to alphavantage.co
+    :return: prints stock stats for the provided company to the output window
+    """
     company = input_window.get().upper()
     api = "KXWH1RPNH5432DUJ"
     stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
