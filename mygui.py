@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import font
 import json
 from urllib.request import urlopen
 import ssl
@@ -83,17 +82,19 @@ def get_stocks():
         output_window["text"] += "Try a different company/symbol."
 
 
+# Create the main window with title and icon
 root = Tk()
 root.title("Deskpy")
 icon = PhotoImage(file="pycon.png")
 root.iconphoto(False, icon)
 
+# Label and window for user input
 input_label = Label(root, text="Input: ")
 input_label.grid(row=0, column=0)
-
 input_window = Entry(root, width=50, bg="black", fg="green", bd=5)
 input_window.grid(row=0, column=1, columnspan=3)
 
+# Buttons for weather, stocks, news, quit
 button_weather = Button(root, text="Weather", command=get_weather, padx=30, pady=20)
 button_weather.grid(row=1, column=1)
 
@@ -106,12 +107,13 @@ button_stocks.grid(row=1, column=3)
 button_quit = Button(root, text="Exit", command=root.quit, padx=30, pady=20)
 button_quit.grid(row=2, column=3)
 
+# Label and window for the output
 output_label = Label(root, text="Output: ")
 output_label.grid(row=3, column=0)
-
 output_window = Label(root, bg="black", fg="green", relief=SUNKEN, width=44)
 output_window.grid(row=3, column=1, columnspan=3)
 
+# 'Crafted by' banner at the bottom
 pyd_label = Label(root, text="Crafted by the Py'd Typer", bd=1, relief=SUNKEN, font="bold", anchor=E)
 pyd_label.grid(row=4, column=0, columnspan=4, sticky=W+E)
 
