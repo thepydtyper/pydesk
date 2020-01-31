@@ -9,14 +9,36 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
+def get_input():
+    """
+    Called by button functions to grab user-entered data
+    :return: a string of the user-inputed data
+    """
+    return input_window.get()
+
+
+def get_api_key(info):
+    """
+    Called by button functions to grab appropriate API keys
+    :param info: a string denoting type of info the calling function will return
+    :return: a string of the API key needed by each type of function ['weather', 'news', etc]
+    """
+    if info == "weather":
+        return "19b28d8185e272acbb4751d900d9db03"
+    elif info == "news":
+        return "b24fda3c46cb4fc69599efdb5aadcbc1"
+    elif info == "stocks":
+        return "KXWH1RPNH5432DUJ"
+
+
 def get_weather():
     """
     Called upon user-click of the 'Weather' button.
     Gets user-inputed zip code as text from the Input field to generate an API call to openweathermap.org
     :return: prints weather stats for the provided zip code to the output window
     """
-    zipc = input_window.get()
-    api = "19b28d8185e272acbb4751d900d9db03"
+    zipc = get_input()
+    api = get_api_key("weather")
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zipc}&APPID=" + api
     try:
         data = urlopen(weather_url, context=ctx).read()
@@ -26,7 +48,7 @@ def get_weather():
         weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
         output_window['text'] = f"Gathering weather report for {zipc}.."
         output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
-    except:
+    except Exception:
         output_window["text"] = f"Sorry, but '{zipc}' is not recognized by the system.\n"
         output_window["text"] += "Try a different ZIP."
 
@@ -37,8 +59,8 @@ def get_news():
     Gets user-inputed subject as text from the Input field to generate an API call to newsapi.org
     :return: prints headlines for the provided topic to the output window
     """
-    search = input_window.get()
-    api = "b24fda3c46cb4fc69599efdb5aadcbc1"
+    search = get_input()
+    api =  get_api_key("news")
     news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
     try:
         data = urlopen(news_url, context=ctx).read()
@@ -51,7 +73,7 @@ def get_news():
         output_window['text'] = f"Fetching '{search}' headlines.."
         for title, url in headline_dict.items():
             output_window['text'] += f"\n\t{title}: {url}"
-    except:
+    except Exception:
         output_window["text"] = f"Sorry, but '{search}' is not recognized by the system.\n"
         output_window["text"] += "Try a different topic."
 
@@ -62,8 +84,8 @@ def get_stocks():
     Gets user-inputed company ticker symbol as text from the Input field to generate an API call to alphavantage.co
     :return: prints stock stats for the provided company to the output window
     """
-    company = input_window.get().upper()
-    api = "KXWH1RPNH5432DUJ"
+    company = get_input()
+    api = get_api_key("stocks")
     stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
     try:
         data = urlopen(stock_url, context=ctx).read()
@@ -77,7 +99,7 @@ def get_stocks():
         output_window['text'] += f"Low: {low}\n"
         output_window['text'] += f"High: {high}\n"
         output_window['text'] += f"Price: {price}\n"
-    except:
+    except Exception:
         output_window["text"] = f"Sorry, but '{company}' is not recognized by the system.\n"
         output_window["text"] += "Try a different company/symbol."
 
