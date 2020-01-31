@@ -106,6 +106,7 @@ def get_stocks():
 
 # Create the main window with title and icon
 root = Tk()
+root.geometry("800x640")
 root.title("Deskpy")
 icon = PhotoImage(file="pycon.png")
 root.iconphoto(False, icon)
