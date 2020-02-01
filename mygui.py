@@ -3,11 +3,6 @@ import json
 from urllib.request import urlopen
 import ssl
 
-# ignore SSL cert errors
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
-
 
 def get_input():
     """
