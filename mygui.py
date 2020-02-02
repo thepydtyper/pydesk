@@ -59,13 +59,14 @@ def get_news():
     :return: prints headlines for the provided topic to the output window
     """
     search = get_input()
-    api =  get_api_key("news")
-    news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
+    api_key = get_api_key("news")
+    news_url = f"https://newsapi.org/v2/everything?"
+    params = {"q": search, "apiKey": api_key}
     try:
-        data = urlopen(news_url).read()
-        js = json.loads(data)
+        data = requests.get(news_url, params=params)
+        js = data.json()
         headline_dict = {}
-        for _ in range(3):
+        for _ in range(5):
             title = js['articles'][_]['title']
             url = js['articles'][_]['url']
             headline_dict.update({title: url})
