@@ -100,7 +100,7 @@ def get_stocks():
 
 # Create the main window with title and icon
 root = Tk()
-root.title("Pydesk")
+root.title("Pydesk v0.5")
 icon = PhotoImage(file="pycon.png")
 root.iconphoto(False, icon)
 
