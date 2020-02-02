@@ -1,6 +1,7 @@
 from tkinter import *
 import json
 from urllib.request import urlopen
+import requests
 
 
 def get_input():
@@ -32,17 +33,21 @@ def get_weather():
     :return: prints weather stats for the provided zip code to the output window
     """
     zipc = get_input()
-    api = get_api_key("weather")
-    weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zipc}&APPID=" + api
+    api_key = get_api_key("weather")
+    weather_url = f"http://api.openweathermap.org/data/2.5/weather?"
+    params = {"APPID": api_key, "zip": zipc}
     try:
-        data = urlopen(weather_url).read()
-        js = json.loads(data)
+        data = requests.get(weather_url, params=params)
+        js = data.json()
         weather_desc = js['weather'][0]['description']
         temp_kel = js['main']['temp']
         weather_temp = int((temp_kel - 273.15) * (9/5) + 32)
-        output_window['text'] = f"Gathering weather report for {zipc}.."
-        output_window['text'] += f"\nCurrent Temp: {weather_temp}°F\nConditions: {weather_desc}"
-    except Exception:
+        city = js['name']
+        output_window['text'] = f"Gathering weather report for {zipc}..\n"
+        output_window['text'] += f"\nCity: {city}"
+        output_window['text'] += f"\nCurrent Temp: {weather_temp}°F"
+        output_window['text'] += f"\nConditions: {weather_desc}"
+    except:
         output_window["text"] = f"Sorry, but '{zipc}' is not recognized by the system.\n"
         output_window["text"] += "Try a different ZIP."
 
@@ -67,7 +72,7 @@ def get_news():
         output_window['text'] = f"Fetching '{search}' headlines.."
         for title, url in headline_dict.items():
             output_window['text'] += f"\n{title}: {url}"
-    except Exception:
+    except:
         output_window["text"] = f"Sorry, but '{search}' is not recognized by the system.\n"
         output_window["text"] += "Try a different topic."
 
@@ -93,7 +98,7 @@ def get_stocks():
         output_window['text'] += f"Low: {low}\n"
         output_window['text'] += f"High: {high}\n"
         output_window['text'] += f"Price: {price}\n"
-    except Exception:
+    except:
         output_window["text"] = f"Sorry, but '{company}' is not recognized by the system.\n"
         output_window["text"] += "Try a different company/symbol."
 
