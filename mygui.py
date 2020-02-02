@@ -149,7 +149,7 @@ output_window = Label(output_frame, bg="black", fg="green", anchor=NW, justify="
 output_window.place(relx=0.4, relwidth=1, relheight=1)
 
 # # 'Crafted by' banner at the bottom
-pyd_label = Label(root, text="Crafted by the Py'd Typer", bd=1, relief=SUNKEN, font="bold", anchor=E)
+pyd_label = Label(root, text="Crafted by the Py'd Typer", bd=1, relief=SUNKEN, font=("Monospaced", 12), anchor=E)
 pyd_label.place(rely=0.9, relwidth=1, relheight=0.1)
 
 root.mainloop()
