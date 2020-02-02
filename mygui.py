@@ -1,7 +1,6 @@
 from tkinter import *
 import json
 from urllib.request import urlopen
-import ssl
 
 
 def get_input():
@@ -36,7 +35,7 @@ def get_weather():
     api = get_api_key("weather")
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?zip={zipc}&APPID=" + api
     try:
-        data = urlopen(weather_url, context=ctx).read()
+        data = urlopen(weather_url).read()
         js = json.loads(data)
         weather_desc = js['weather'][0]['description']
         temp_kel = js['main']['temp']
@@ -58,7 +57,7 @@ def get_news():
     api =  get_api_key("news")
     news_url = f"https://newsapi.org/v2/everything?q={search}&apiKey=" + api
     try:
-        data = urlopen(news_url, context=ctx).read()
+        data = urlopen(news_url).read()
         js = json.loads(data)
         headline_dict = {}
         for _ in range(3):
@@ -67,7 +66,7 @@ def get_news():
             headline_dict.update({title: url})
         output_window['text'] = f"Fetching '{search}' headlines.."
         for title, url in headline_dict.items():
-            output_window['text'] += f"\n\t{title}: {url}"
+            output_window['text'] += f"\n{title}: {url}"
     except Exception:
         output_window["text"] = f"Sorry, but '{search}' is not recognized by the system.\n"
         output_window["text"] += "Try a different topic."
@@ -83,7 +82,7 @@ def get_stocks():
     api = get_api_key("stocks")
     stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
     try:
-        data = urlopen(stock_url, context=ctx).read()
+        data = urlopen(stock_url).read()
         js = json.loads(data)
         opening = js['Global Quote']['02. open']
         high = js["Global Quote"]["03. high"]
@@ -101,38 +100,56 @@ def get_stocks():
 
 # Create the main window with title and icon
 root = Tk()
-root.geometry("800x640")
-root.title("Deskpy")
+root.title("Pydesk")
 icon = PhotoImage(file="pycon.png")
 root.iconphoto(False, icon)
 
+HEIGHT = 400
+WIDTH = 500
+canvas = Canvas(root, height=HEIGHT, width=WIDTH)
+canvas.pack()
+
+# Input Frame
+input_frame = Frame(root, bd=5)
+input_frame.place(relx=0.3, rely=0.1, relwidth=1, relheight=0.1, anchor=N)
+
 # Label and window for user input
-input_label = Label(root, text="Input: ")
-input_label.grid(row=0, column=0)
-input_window = Entry(root, width=50, bg="black", fg="green", bd=5)
-input_window.grid(row=0, column=1, columnspan=3)
+input_label = Label(input_frame, text="Input:", font=("Monospaced", 17))
+input_label.place(relwidth=0.55, relheight=1)
+
+input_window = Entry(input_frame, font=("Monospaced", 17), bg="black", fg="green")
+input_window.place(relx=0.4, relwidth=1, relheight=1)
+
+# Button Frame
+button_frame = Frame(root, bd=5)
+button_frame.place(relx=0.3, rely=0.25, relwidth=1, relheight=0.1, anchor=N)
 
 # Buttons for weather, stocks, news, quit
-button_weather = Button(root, text="Weather", command=get_weather, padx=30, pady=20)
-button_weather.grid(row=1, column=1)
+button_weather = Button(button_frame, text="Weather", command=get_weather)
+button_weather.place(relx=0.25, relwidth=0.15, relheight=1)
 
-button_news = Button(root, text="News", command=get_news, padx=30, pady=20)
-button_news.grid(row=1, column=2)
+button_news = Button(button_frame, text="News", command=get_news)
+button_news.place(relx=0.45, relwidth=0.15, relheight=1)
 
-button_stocks = Button(root, text="Stocks", command=get_stocks, padx=30, pady=20)
-button_stocks.grid(row=1, column=3)
+button_stocks = Button(button_frame, text="Stocks", command=get_stocks)
+button_stocks.place(relx=0.65, relwidth=0.15, relheight=1)
 
-button_quit = Button(root, text="Exit", command=root.quit, padx=30, pady=20)
-button_quit.grid(row=2, column=3)
+button_quit = Button(button_frame, text="Exit", command=root.quit)
+button_quit.place(relx=0.85, relwidth=0.15, relheight=1)
 
-# Label and window for the output
-output_label = Label(root, text="Output: ")
-output_label.grid(row=3, column=0)
-output_window = Label(root, bg="black", fg="green", relief=SUNKEN, width=44)
-output_window.grid(row=3, column=1, columnspan=3)
+# Output Frame
+output_frame = Frame(root, bd=5)
+output_frame.place(relx=0.3, rely=0.35, relwidth=1, relheight=0.5, anchor=N)
 
-# 'Crafted by' banner at the bottom
+# # Label and window for the output
+output_label = Label(output_frame, text="Output:", font=("Monospaced", 17))
+output_label.place(relwidth=0.55, relheight=1)
+
+output_window = Label(output_frame, bg="black", fg="green", anchor=NW, justify="left")
+output_window.place(relx=0.4, relwidth=1, relheight=1)
+
+# # 'Crafted by' banner at the bottom
 pyd_label = Label(root, text="Crafted by the Py'd Typer", bd=1, relief=SUNKEN, font="bold", anchor=E)
-pyd_label.grid(row=4, column=0, columnspan=4, sticky=W+E)
+pyd_label.place(rely=0.9, relwidth=1, relheight=0.1)
 
 root.mainloop()
