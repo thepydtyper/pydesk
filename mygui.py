@@ -70,7 +70,7 @@ def get_news():
             title = js['articles'][_]['title']
             url = js['articles'][_]['url']
             headline_dict.update({title: url})
-        output_window['text'] = f"Fetching '{search}' headlines.."
+        output_window['text'] = f"Fetching '{search}' headlines..\n"
         for title, url in headline_dict.items():
             output_window['text'] += f"\n{title}: {url}"
     except:
@@ -85,20 +85,22 @@ def get_stocks():
     :return: prints stock stats for the provided company to the output window
     """
     company = get_input()
-    api = get_api_key("stocks")
-    stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + company + "&apikey=" + api
+    api_key = get_api_key("stocks")
+    stock_url = "https://www.alphavantage.co/query?"
+    params = {"apikey": api_key, "symbol": company, "function": "GLOBAL_QUOTE"}
     try:
-        data = urlopen(stock_url).read()
-        js = json.loads(data)
+        data = requests.get(stock_url, params=params)
+        js = data.json()
+        symbol = js["Global Quote"]["01. symbol"]
         opening = js['Global Quote']['02. open']
         high = js["Global Quote"]["03. high"]
         low = js["Global Quote"]["04. low"]
         price = js["Global Quote"]["05. price"]
-        output_window['text'] = f"Getting stock quote for {company}:..\n"
-        output_window['text'] += f"Open: {opening}\n"
-        output_window['text'] += f"Low: {low}\n"
-        output_window['text'] += f"High: {high}\n"
-        output_window['text'] += f"Price: {price}\n"
+        output_window['text'] = f"Getting stock quote for {symbol}..\n"
+        output_window['text'] += f"\nOpen: {opening}"
+        output_window['text'] += f"\nLow: {low}"
+        output_window['text'] += f"\nHigh: {high}"
+        output_window['text'] += f"\nPrice: {price}"
     except:
         output_window["text"] = f"Sorry, but '{company}' is not recognized by the system.\n"
         output_window["text"] += "Try a different company/symbol."
