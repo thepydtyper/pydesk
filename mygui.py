@@ -1,6 +1,5 @@
 from tkinter import *
 import json
-from urllib.request import urlopen
 import requests
 
 
